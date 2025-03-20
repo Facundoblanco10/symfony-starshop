@@ -1,0 +1,34 @@
+<h1>
+    Starshop: your monopoly-busting option for Starship parts!
+</h1>
+
+<div>
+    Browse through {{ numberOfStarships * 11 }} starships!
+
+    {% if numberOfStarships > 400 %}
+        <p>That's a lot of starships!</p>
+    {% endif %}
+</div>
+
+<div>
+    <h2>My Ship</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>{{ myShip.name }}</td>
+        </tr>
+        <tr>
+            <th>Class</th>
+            <td>{{ myShip.class }}</td>
+        </tr>
+        <tr>
+            <th>Captain</th>
+            <td>{{ myShip.captain|upper|lower|title }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ myShip.status }}</td>
+        </tr>
+    </table>
+</div>
