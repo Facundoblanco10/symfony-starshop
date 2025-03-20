@@ -7,7 +7,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainController
 {
-
     #[Route('/')]
     public function homepage()
     {
@@ -15,7 +14,7 @@ class MainController
     }
 
     #[Route('/about')]
-    public function about()
+    public function about(): Response
     {
         return new Response('Starshop is a new online store for Starship parts. We are here to help you find the parts you need to keep your Starship flying!');
     }
