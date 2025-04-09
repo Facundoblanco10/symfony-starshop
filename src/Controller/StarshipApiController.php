@@ -10,11 +10,21 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class StarshipApiController extends AbstractController
 {
-    #[Route('/api/starships')]
+    #[Route('/api/starships', methods: ['GET'])]
     public function getCollection(StarshipRepository $repository): Response
     {
         $starships = $repository->findAll();
 
         return $this->json($starships);
+    }
+
+    #[Route('/api/starships/{id<\d+>}', methods: ['GET'])]
+    public function get(int $id, StarshipRepository $repository): Response
+    {
+        $starship = $repository->find($id);
+        if (!$starship) {
+            throw $this->createNotFoundException('Starship not found');
+        }
+        return $this->json($starship);
     }
 }
