@@ -19,6 +19,12 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Service\MedooClient:
+        arguments:
+            $host: '%env(resolve:DB_HOST)%'
+            $database: '%env(resolve:DB_NAME)%'
+            $username: '%env(resolve:DB_USER)%'
+            $password: '%env(resolve:DB_PASSWORD)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
