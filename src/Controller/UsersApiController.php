@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Dto\CreateUserRequest;
+use App\Dto\UpdateUserRequest;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,6 +74,38 @@ class UsersApiController extends AbstractController
         }
         return $this->json([
             'message' => 'User deleted successfully',
+        ], Response::HTTP_OK);
+    }
+
+    #[Route('api/users/{id<\d+>}', methods: ['PUT'])]
+    public function updateUser(
+        UserRepository $repository,
+        int $id,
+        Request $request,
+        ValidatorInterface $validator
+    ): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $dto = UpdateUserRequest::fromArray($data ?? []);
+
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[$error->getPropertyPath()] = $error->getMessage();
+            }
+
+            return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
+        }
+
+        $updated = $repository->updateById($id, $dto->toArray());
+        
+        if (!$updated) {
+            return $this->json(['error' => 'User could not be updated'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return $this->json([
+            'message' => 'User updated successfully'
         ], Response::HTTP_OK);
     }
 }

@@ -70,4 +70,16 @@ class UserRepository
         $this->logger->info('Deleting user by ID', ['id' => $id]);
         return $this->database->delete("users", ["id" => $id])->rowCount() > 0;   
     }
+
+    public function updateById(int $id, array $data): bool
+    {
+        $this->logger->info('Updating user by ID', ['id' => $id, 'data' => $data]);
+
+        if (empty($data)) {
+            $this->logger->warning('Update aborted: no data provided');
+            return false;
+        }
+
+        return $this->database->update("users", $data, ["id" => $id])->rowCount() > 0;
+    }
 }
