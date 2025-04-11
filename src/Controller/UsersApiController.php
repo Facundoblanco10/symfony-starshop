@@ -61,4 +61,18 @@ class UsersApiController extends AbstractController
             'message' => 'User created successfully'
         ], Response::HTTP_CREATED);
     }
+
+    #[Route('/api/users/{id<\d+>}', methods: ['DELETE'])]
+    public function deleteUser(UserRepository $repository, int $id): Response
+    {
+        $deleted = $repository->deleteById($id);
+        if (!$deleted) {
+            return $this->json([
+                'error' => 'User could not be deleted',
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return $this->json([
+            'message' => 'User deleted successfully',
+        ], Response::HTTP_OK);
+    }
 }

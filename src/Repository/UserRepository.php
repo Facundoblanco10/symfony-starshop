@@ -64,4 +64,10 @@ class UserRepository
             "created_at" => (new DateTime())->format('Y-m-d H:i:s')
         ])->rowCount() > 0;
     }
+
+    public function deleteById(int $id): bool
+    {
+        $this->logger->info('Deleting user by ID', ['id' => $id]);
+        return $this->database->delete("users", ["id" => $id])->rowCount() > 0;   
+    }
 }
