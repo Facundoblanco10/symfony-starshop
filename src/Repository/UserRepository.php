@@ -49,4 +49,19 @@ class UserRepository
             new DateTime($data["created_at"])
         );
     }
+
+    public function create(string $name, string $email, string $password): bool
+    {
+        $this->logger->info("Creating new user", [
+            'name' => $name,
+            'email' => $email
+        ]);
+
+        return $this->database->insert("users", [
+            "name" => $name,
+            "email" => $email,
+            "password" => password_hash($password, PASSWORD_BCRYPT),
+            "created_at" => (new DateTime())->format('Y-m-d H:i:s')
+        ])->rowCount() > 0;
+    }
 }
